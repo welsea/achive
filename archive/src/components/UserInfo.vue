@@ -1,12 +1,20 @@
 <template>
-  <div class="userinfo">
-    <img src="../assets/avatar.png" alt="avatar" class="avatar">
-    <div>
-      <div class="name">welsea</div>
-      <div class="id">@welsea@welsea.site</div>
+  <div>
+    <div class="userinfo">
+      <div class="status">加入于2020.10.11</div>
+      <div class="info">
+        <img src="../assets/avatar.png" alt="avatar" class="avatar">
+        <div>
+          <div class="name">welsea</div>
+          <div class="id">@welsea@welsea.site</div>
+        </div>
+        <el-button class="setting" type="primary" @click="setting">设置</el-button>
+      </div>
+
     </div>
-    <el-button class="setting" type="primary" @click="setting">设置</el-button>
+
   </div>
+
 </template>
 
 <script>
@@ -32,14 +40,25 @@
   }
 
   .userinfo {
-    display: flex;
-    align-items: flex-end;
-    flex-direction: row;
     margin-bottom: 1em;
-    padding: 2em 2em 0.5em 2em;
+    padding: 1em 4em 0.5em 4em;
     border-width: 0 0 2px 0;
     border-style: dashed;
     border-color: #ddd;
+  }
+
+  .status {
+    color: #ddd;
+    /* position: relative; */
+    /* right: 0; */
+    text-align: right;
+    font-size:0.9em;
+  }
+
+  .info {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
   }
 
   .name {
@@ -53,6 +72,6 @@
 
   .setting {
     position: absolute;
-    right: 1em;
+    right: 4em;
   }
 </style>
