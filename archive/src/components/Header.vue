@@ -1,8 +1,7 @@
 <template>
     <div>
 
-        <el-menu :default-active="this.$route.path" router mode="horizontal" background-color="#f6f6f6"
-            active-text-color="#ffd04b">
+        <el-menu :default-active="this.$route.path" router mode="horizontal">
             <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
                 {{ item.navItem}}
             </el-menu-item>
