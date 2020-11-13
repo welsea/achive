@@ -4,10 +4,8 @@
     <div class="mainContent">
       <Timeline style="width:70%" />
       <div>
-        <el-button type="primary" icon="el-icon-edit" plain>添加新条目</el-button>
-          
-      <Tag />
-        
+        <el-button type="primary" icon="el-icon-edit" plain @click="addRecord">添加新条目</el-button>
+        <Tag />
       </div>
     </div>
   </div>
@@ -26,7 +24,13 @@
       Timeline,
       UserInfo,
       Tag
-    }
+    },
+    methods: {
+      addRecord(){
+        //新加条目
+        this.$router.push('/add')
+      }
+    },
   }
 </script>
 <style>

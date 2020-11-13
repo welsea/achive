@@ -3,10 +3,10 @@
     <div class="timeline-top">
       <div class="type">
         <el-radio-group v-model="radio" @change="changeType">
-          <el-radio-button label="ALL"></el-radio-button>
           <el-radio-button label="阅读"></el-radio-button>
-          <el-radio-button label="影视剧"></el-radio-button>
+          <el-radio-button label="影视"></el-radio-button>
         </el-radio-group>
+        <div class="count">此类目下有29条记录</div>
       </div>
       <div class="search">
         <el-input placeholder="搜索条目" prefix-icon="el-icon-search" v-model="input">
@@ -39,7 +39,7 @@
     name: 'timeline',
     data() {
       return {
-        radio: 'ALL',
+        radio: '阅读',
         input: '',
         activeName: '',
         years: ['2020', '2019', '2018'],
@@ -83,10 +83,21 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
-    top: -2.2em;
+    top: -3em;
     left: 7em;
   }
 
+  .type{
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .count{
+    font-size: 0.8em;
+    color: #888;
+    /* margin-left: 1em; */
+    padding: 0.5em 1em;
+  }
   .search {
     width: 200px;
     /* position: relative; */
