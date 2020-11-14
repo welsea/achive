@@ -3,15 +3,7 @@
         <div class="title">
             添加新记录
         </div>
-        <div class="recordinfo">
-            <!-- <div class="steps">
-                <el-steps direction="vertical" :active="1">
-                    <el-step title="步骤 1"></el-step>
-                    <el-step title="步骤 2"></el-step>
-                    <el-step title="步骤 3"></el-step>
-                </el-steps>
-            </div> -->
-            <!-- <div> -->
+        <div class="recordinfo" v-show="setp1">
             <div style="margin-bottom:1em;">
                 <el-radio-group v-model="radio" @change="radioChange">
                     <el-radio :label="1">阅读记录</el-radio>
@@ -20,9 +12,11 @@
             </div>
             <AddRead v-if="radio==1" />
             <AddWatch v-else />
-            <!-- </div> -->
+            <el-button primary @click="nextStep">Next</el-button>
         </div>
-
+        <div v-show="step2">
+            
+        </div>
     </div>
 </template>
 
@@ -39,13 +33,19 @@
         },
         data() {
             return {
-                radio: 1
+                radio: 1,
+                setp1:true,
+                step2:false
             }
         },
         methods: {
             radioChange(val) {
                 this.radio = val;
             },
+            nextStep(){
+                this.step1=false;
+                this.step2=true;
+            }
         },
     }
 </script>

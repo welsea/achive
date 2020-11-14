@@ -25,7 +25,11 @@
                 <AddTags />
             </div>
         </div>
-        <div v-else></div>
+        <div v-else>
+            搜索已有条目
+            <el-autocomplete class="inline-input" v-model="exit" :fetch-suggestions="querySearch" placeholder="请输入内容"
+                @select="handleSelect"></el-autocomplete>
+        </div>
     </div>
 </template>
 <script>
@@ -41,7 +45,9 @@
                 title: '',
                 author: '',
                 start: '',
-                status: 1
+                status: 1,
+                exit: '',
+                exited_records: []
             }
         },
         methods: {
@@ -53,7 +59,38 @@
             },
             statusChange(val) {
                 this.status = val;
+            },
+            querySearch(queryString, cb) {
+                var exited_records = this.exited_records;
+                var results = queryString ? exited_records.filter(this.createFilter(queryString)) : exited_records;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (exited_record) => {
+                    console.log(exited_record.value.toLowerCase().indexOf(queryString.toLowerCase())===0)
+
+                    return (exited_record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            loadAll() {
+                return [{
+                        'value': 'his dark materials'
+                    },
+                    {
+                        'value': 'harry potter'
+                    },
+                    {
+                        'value': 'earthsea'
+                    }
+                ]
+            },
+            handleSelect(item) {
+                console.log(item)
             }
+        },
+        mounted() {
+            this.exited_records = this.loadAll();
         },
     }
 </script>

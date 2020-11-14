@@ -15,7 +15,7 @@
                     </el-tag>
                 </div>
                 <div>
-                    <el-input placeholder="添加标签，多个标签用分号分隔" size="medium" v-model="tag" maxlength="20" @keyup.enter.native="addTag"
+                    <el-input placeholder="创建新标签，多个标签用分号分隔" size="medium" v-model="tag" maxlength="20" @keyup.enter.native="addTag"
                        style="width:20em " @blur="addTag">
                     </el-input>
                 </div>
