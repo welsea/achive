@@ -20,14 +20,21 @@
                     <el-radio :label="1" style=" margin-left:1em">已读完</el-radio>
                     <el-radio :label="2">未读完</el-radio>
                 </el-radio-group>
-
+            </div>
+            <div>
+                <AddTags />
             </div>
         </div>
         <div v-else></div>
     </div>
 </template>
 <script>
+    import AddTags from '@/components/AddTags.vue'
     export default {
+        name: 'addRead',
+        components: {
+            AddTags
+        },
         data() {
             return {
                 type: 1,

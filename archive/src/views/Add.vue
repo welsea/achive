@@ -32,7 +32,7 @@
     import AddWatch from '@/components/addWatch.vue'
 
     export default {
-        name: 'Home',
+        name: 'Add',
         components: {
             AddRead,
             AddWatch
