@@ -15,8 +15,8 @@
                     </el-tag>
                 </div>
                 <div>
-                    <el-input placeholder="创建新标签，多个标签用分号分隔" size="medium" v-model="tag" maxlength="20" @keyup.enter.native="addTag"
-                       style="width:20em " @blur="addTag">
+                    <el-input placeholder="创建新标签，多个标签用分号分隔" size="medium" v-model="tag" maxlength="20"
+                        @keyup.enter.native="addTag" style="width:20em " @blur="addTag">
                     </el-input>
                 </div>
             </div>
@@ -34,6 +34,9 @@
                 tagAlert: 0,
                 choosed_tags: [],
             }
+        },
+        props:{
+            exit_tags:Array
         },
         methods: {
             addTag() {
@@ -59,23 +62,32 @@
                     });
 
                 }
+                this.$emit('tags', this.choosed_tags);
                 this.tag = ''
             },
             chooseTag(tag) {
                 if (this.choosed_tags.indexOf(tag) == -1) {
                     this.choosed_tags.push(tag);
+                    this.$emit('tags', this.choosed_tags);
                 }
 
             },
             deleteTag(index) {
                 this.choosed_tags.splice(index, 1);
+                this.$emit('tags', this.choosed_tags);
+
+            }
+        },
+        watch: {
+            exit_tags:function(){
+                this.choosed_tags=this.exit_tags;
             }
         },
     }
 </script>
 <style scoped>
-    
-    .tags>.el-tag, .choosed_tags>.el-tag {
+    .tags>.el-tag,
+    .choosed_tags>.el-tag {
         margin-right: 1em;
         margin-bottom: 1em;
 
