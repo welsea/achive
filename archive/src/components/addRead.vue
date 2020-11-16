@@ -7,20 +7,19 @@
                     <el-radio :label="2">添加已有</el-radio>
                 </el-radio-group>
             </div>
-
             <div class="new">
-                <div>
+                <div v-show="type==2">
                     搜索已有条目
                     <el-autocomplete class="inline-input" v-model="exit" :fetch-suggestions="querySearch"
                         placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
                 </div>
-                <div>书名<el-input v-model="basicInfo.title" clearable style="width:200px; margin-left:1em"
+                <div><span>*</span>书名<el-input v-model="basicInfo.title" clearable style="width:200px; margin-left:1em"
                         :disabled="type==2"></el-input>
                 </div>
-                <div>作者<el-input v-model="basicInfo.author" clearable style="width:200px; margin-left:1em"
+                <div><span>*</span>作者<el-input v-model="basicInfo.author" clearable style="width:200px; margin-left:1em"
                         :disabled="type==2"></el-input>
                 </div>
-                <div>开始时间<el-date-picker style=" margin-left:1em" v-model="basicInfo.start" type="date"
+                <div><span>*</span>开始时间<el-date-picker style=" margin-left:1em" v-model="basicInfo.start" type="date"
                         placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" :disabled="type==2">
                     </el-date-picker>
                 </div>
@@ -32,7 +31,7 @@
                     </el-radio-group>
                 </div>
                 <div>
-                    <AddTags v-on:tags="tags" v-if="type==1" />
+                    <AddTags v-on:ch_tag="ch_tag" v-if="type==1" />
                     <AddTags :exit_tags="basicInfo.tag" v-else />
                 </div>
             </div>
@@ -61,17 +60,14 @@
                     status: 1,
                     tag: []
                 },
-                title: '',
-                author: '',
-                start: '',
-                status: 1,
                 exit: '',
                 exited_records: [],
                 step: 1,
-                step1:false
+                step1: false
             }
         },
         methods: {
+            //step1
             typeChange(val) {
                 this.type = val;
             },
@@ -86,8 +82,6 @@
             },
             createFilter(queryString) {
                 return (exited_record) => {
-                    console.log(exited_record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-
                     return (exited_record.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
@@ -121,16 +115,39 @@
             handleSelect(item) {
                 this.basicInfo = item;
             },
-            nextStep() {
-                console.log(this.basicInfo);
-                this.$emit(this.step1)
-                this.step++
-            },
-            tags(tags) {
+            ch_tag(tags) {
+                let ch_tags = []
                 tags.forEach(function (val, i) {
-                    this.basicInfo.tag[i] = val;
+                    ch_tags[i] = val;
                 });
-            }
+                this.basicInfo.tag = ch_tags;
+            },
+            warn() {
+                this.$notify({
+                    title: '信息不完整',
+                    message: '标题，作者和开始时间为必填项',
+                    type: 'warning'
+                });
+            },
+            nextStep() {
+                let fill = true;
+                let obj = this.basicInfo;
+                for (let key in obj) {
+                    if (!obj[key]) {
+                        fill = false;
+                    }
+                }
+                if (fill === true) {
+                    this.$emit('nstep', this.step1);
+                    this.step++
+                } else {
+                    this.warn();
+                    console.log('blank')
+                }
+
+            },
+            //step2
+
         },
         mounted() {
             this.exited_records = this.loadAll()
@@ -147,5 +164,9 @@
         margin-top: 6em;
         position: relative;
         right: -2em;
+    }
+
+    span {
+        color: rgb(194, 11, 11);
     }
 </style>

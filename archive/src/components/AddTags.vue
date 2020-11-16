@@ -62,19 +62,19 @@
                     });
 
                 }
-                this.$emit('tags', this.choosed_tags);
+                this.$emit('ch_tag', this.choosed_tags);
                 this.tag = ''
             },
             chooseTag(tag) {
                 if (this.choosed_tags.indexOf(tag) == -1) {
                     this.choosed_tags.push(tag);
-                    this.$emit('tags', this.choosed_tags);
+                    this.$emit('ch_tag', this.choosed_tags);
                 }
 
             },
             deleteTag(index) {
                 this.choosed_tags.splice(index, 1);
-                this.$emit('tags', this.choosed_tags);
+                this.$emit('ch_tag', this.choosed_tags);
 
             }
         },

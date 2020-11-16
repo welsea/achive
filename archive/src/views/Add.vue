@@ -10,7 +10,7 @@
                     <el-radio :label="2">观影记录</el-radio>
                 </el-radio-group>
             </div>
-            <AddRead v-if="radio==1" :step="1"/>
+            <AddRead v-if="radio==1" v-on:nstep="nstep"/>
             <AddWatch v-else />
         </div>
     </div>
@@ -30,12 +30,16 @@
         data() {
             return {
                 radio: 1,
+                step1:true
             }
         },
         methods: {
             radioChange(val) {
                 this.radio = val;
             },
+            nstep(step1){
+                this.step1=step1;
+            }
         },
     }
 </script>
