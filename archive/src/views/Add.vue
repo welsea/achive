@@ -1,16 +1,16 @@
 <template>
     <div class="add">
-        <div class="title">
+        <!-- <div class="title">
             添加新记录
-        </div>
+        </div> -->
         <div class="recordinfo">
-            <div style="margin-bottom:1em;">
+            <!-- <div style="margin-bottom:1em;">
                 <el-radio-group v-model="radio" @change="radioChange" v-show="step1">
                     <el-radio :label="1">阅读记录</el-radio>
                     <el-radio :label="2">观影记录</el-radio>
                 </el-radio-group>
-            </div>
-            <AddRead v-if="radio==1" v-on:nstep="nstep"/>
+            </div> -->
+            <AddRead v-if="type=='1'" v-on:nstep="nstep"/>
             <AddWatch v-else />
         </div>
     </div>
@@ -30,7 +30,8 @@
         data() {
             return {
                 radio: 1,
-                step1:true
+                step1:true,
+                type:'1'
             }
         },
         methods: {
@@ -40,6 +41,9 @@
             nstep(step1){
                 this.step1=step1;
             }
+        },
+        mounted() {
+            this.type=this.$route.query.type
         },
     }
 </script>
@@ -58,9 +62,8 @@
     }
 
     .recordinfo {
-        margin: auto;
-        width: fit-content;
-
+        /* margin: auto; */
+        /* width: 100%; */
     }
 
 

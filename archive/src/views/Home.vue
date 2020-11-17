@@ -4,7 +4,13 @@
     <div class="mainContent">
       <Timeline style="width:70%" />
       <div>
-        <el-button type="primary" icon="el-icon-edit" plain @click="addRecord">添加新条目</el-button>
+        <el-dropdown trigger="click" @command="handleCommand">
+        <el-button type="primary" icon="el-icon-edit" plain >添加新条目</el-button>
+          <el-dropdown-menu>
+            <el-dropdown-item command="1" icon="el-icon-reading">阅读记录</el-dropdown-item>
+            <el-dropdown-item command='2' icon="el-icon-film">观影记录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <Tag />
       </div>
     </div>
@@ -25,10 +31,20 @@
       UserInfo,
       Tag
     },
+    data() {
+      return {
+        type:'1'
+      }
+    },
     methods: {
-      addRecord(){
-        //新加条目
-        this.$router.push('/add')
+      handleCommand(command){
+        this.type=command;
+        this.$router.push({
+          path:'/add',
+          query:{
+            type:this.type
+          }
+        })
       }
     },
   }
