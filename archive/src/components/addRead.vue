@@ -8,38 +8,36 @@
         <div class="step1" v-show="step==1">
             <!-- <div>添加新记录</div> -->
             <div style="margin-bottom:1em;">
-                <el-radio-group v-model="type" @change="typeChange">
-                    <el-radio :label="1">新建</el-radio>
-                    <el-radio :label="2">添加已有</el-radio>
-                </el-radio-group>
-            </div>
-            <div class="new">
-                <div v-show="type==2">
-                    搜索已有条目
-                    <el-autocomplete class="inline-input" v-model="exit" :fetch-suggestions="querySearch"
-                        placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
-                </div>
-                <div><span>*</span>书名<el-input v-model="basicInfo.title" clearable style="width:200px; margin-left:1em"
-                        :disabled="type==2"></el-input>
-                </div>
-                <div><span>*</span>作者<el-input v-model="basicInfo.author" clearable style="width:200px; margin-left:1em"
-                        :disabled="type==2"></el-input>
-                </div>
-                <div><span>*</span>开始时间<el-date-picker style=" margin-left:1em" v-model="basicInfo.start" type="date"
-                        placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" :disabled="type==2">
-                    </el-date-picker>
-                </div>
-                <div>
-                    状态
-                    <el-radio-group v-model="basicInfo.status" @change="statusChange">
-                        <el-radio :label="1" style=" margin-left:1em">已读完</el-radio>
-                        <el-radio :label="2">未读完</el-radio>
-                    </el-radio-group>
-                </div>
-                <div>
-                    <AddTags v-on:ch_tag="ch_tag" v-if="type==1" />
-                    <AddTags :exit_tags="basicInfo.tag" v-else />
-                </div>
+                <el-form ref="basicInfo" :model="basicInfo" :rules="rules" label-width="7em">
+                    <el-form-item v-show="Boolean(isExist)" label="搜索已有条目">
+                        <el-autocomplete class="inline-input" v-model="exit" :fetch-suggestions="querySearch"
+                            placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
+                    </el-form-item>
+                    <el-form-item label="书名" prop="title">
+                        <el-input v-model="basicInfo.title" clearable style="width:200px; margin-left:1em"
+                            :disabled="Boolean(isExist)"></el-input>
+                    </el-form-item>
+                    <el-form-item label="作者" prop="author">
+                        <el-input v-model="basicInfo.author" clearable style="width:200px; margin-left:1em"
+                            :disabled="Boolean(isExist)"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开始时间" prop="start">
+                        <el-date-picker style=" margin-left:1em" v-model="basicInfo.start" type="date"
+                            placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
+                            :disabled="Boolean(isExist)">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="状态">
+                        <el-radio-group v-model="basicInfo.status" @change="statusChange">
+                            <el-radio :label="1" style=" margin-left:1em">已读完</el-radio>
+                            <el-radio :label="2">未读完</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="添加标签">
+                        <AddTags v-on:ch_tag="ch_tag" v-if="isShow" />
+                        <AddTags :exit_tags="basicInfo.tag" v-else />
+                    </el-form-item>
+                </el-form>
             </div>
         </div>
 
@@ -85,20 +83,42 @@
                     author: '',
                     start: '',
                     status: 1,
-                    tag: []
+                    tag: [],
+                },
+                rules: {
+                    title: [{
+                        required: true,
+                        message: '请输入书名',
+                        trigger: 'change'
+                    }],
+                    author: [{
+                        required: true,
+                        message: '请输入作者',
+                        trigger: 'change'
+                    }],
+                    start: [{
+                        required: true,
+                        message: '请选择时间',
+                        trigger: 'change'
+                    }],
                 },
                 exit: '',
                 exited_records: [],
                 step: 1,
-                step1: false,
                 msg: 'use tinymce',
-                disabled: true
+                disabled: true,
+                isShow: false
             }
+        },
+        props: {
+            isExist: Boolean
         },
         methods: {
             //step1
-            typeChange(val) {
-                this.type = val;
+            resetForm(name) {
+                this.$refs[name].resetFields();
+                this.basicInfo.status = 1;
+                this.basicInfo.tag = [];
             },
             statusChange(val) {
                 this.basicInfo.status = val;
@@ -151,39 +171,31 @@
                 });
                 this.basicInfo.tag = ch_tags;
             },
-            warn() {
-                this.$notify({
-                    title: '信息不完整',
-                    message: '标题，作者和开始时间为必填项',
-                    type: 'warning'
-                });
-            },
             nextStep() {
-                let fill = true;
-                let obj = this.basicInfo;
-                for (let key in obj) {
-                    if (!obj[key]) {
-                        fill = false;
-                    }
-                }
-                if (fill === true) {
-                    this.$emit('nstep', this.step1);
+                if (this.submit()!=false) {
                     this.step++
-                } else {
-                    this.warn();
-                    console.log('blank')
+                    this.disabled = false;
                 }
-                this.disabled = false;
-                if(this.step>2){
+                if (this.step > 2) {
                     this.$router.push('/record')
                 }
+            },
+            submit() {
+                return this.$refs['basicInfo'].validate((valid) => {
+                    if (valid) {
+                        console.log(this.basicInfo)
+                        return true
+                    } else {
+                        return false
+                    }
+                })
             },
             priStep() {
                 if (this.step > 1) {
                     this.step--
                 }
-                if(this.step==1){
-                    this.disabled=true;
+                if (this.step == 1) {
+                    this.disabled = true;
                 }
             }
             //step2
@@ -191,6 +203,9 @@
         },
         mounted() {
             this.exited_records = this.loadAll()
+        },
+        watch: {
+
         },
     }
 </script>

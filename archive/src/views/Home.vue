@@ -4,13 +4,16 @@
     <div class="mainContent">
       <Timeline style="width:70%" />
       <div>
-        <el-dropdown trigger="click" @command="handleCommand">
+        <el-cascader v-model="value" :options="options" @change="selectType">
+
+        </el-cascader>
+        <!-- <el-dropdown trigger="click" @command="handleCommand">
         <el-button type="primary" icon="el-icon-edit" plain >添加新条目</el-button>
           <el-dropdown-menu>
             <el-dropdown-item command="1" icon="el-icon-reading">阅读记录</el-dropdown-item>
             <el-dropdown-item command='2' icon="el-icon-film">观影记录</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
         <Tag />
       </div>
     </div>
@@ -33,19 +36,56 @@
     },
     data() {
       return {
-        type:'1'
+        value: [],
+        options: [{
+          value: 'read',
+          label: '阅读记录',
+          children: [{
+            value: 'exist',
+            label: '添加已有'
+          }, {
+            value: 'new',
+            label: '新建记录'
+          }]
+        }, {
+          value: 'watch',
+          label: '观影记录'
+        }]
       }
     },
     methods: {
-      handleCommand(command){
-        this.type=command;
-        this.$router.push({
-          path:'/add',
-          query:{
-            type:this.type
+      selectType(value) {
+        if (value[0] == 'read') {
+          if (value[1] == 'exist') {
+            this.$router.push({
+              name: 'Add',
+              params: {
+                type: '1',
+                exist:true
+              }
+            })
+          }else{
+            this.$router.push({
+              name: 'Add',
+              params: {
+                type: '1',
+                exist:false
+              }
+            })
           }
-        })
-      }
+        }else{
+          this.$router.push({
+              name: 'Add',
+              params: {
+                type: '2',
+              }
+            })
+        }
+        
+      },
+    },
+    created() {
+      
     },
   }
 </script>

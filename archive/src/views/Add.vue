@@ -10,7 +10,7 @@
                     <el-radio :label="2">观影记录</el-radio>
                 </el-radio-group>
             </div> -->
-            <AddRead v-if="type=='1'" v-on:nstep="nstep"/>
+            <AddRead v-if="type=='1'" :isExist="exist" />
             <AddWatch v-else />
         </div>
     </div>
@@ -30,20 +30,18 @@
         data() {
             return {
                 radio: 1,
-                step1:true,
-                type:'1'
+                exist: false,
+                type: '1'
             }
         },
         methods: {
             radioChange(val) {
                 this.radio = val;
             },
-            nstep(step1){
-                this.step1=step1;
-            }
         },
         mounted() {
-            this.type=this.$route.query.type
+            this.type = this.$route.params.type;
+            this.exist = this.$route.params.exist;
         },
     }
 </script>
@@ -65,6 +63,4 @@
         /* margin: auto; */
         /* width: 100%; */
     }
-
-
 </style>

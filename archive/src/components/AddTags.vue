@@ -2,7 +2,7 @@
     <div class="addTags">
 
         <div style="display:flex">
-            <div style="margin-right:1em">添加标签</div>
+            <!-- <div style="margin-right:1em">添加标签</div> -->
 
             <div>
                 <div class="choosed_tags">
