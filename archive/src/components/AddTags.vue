@@ -3,7 +3,6 @@
 
         <div style="display:flex">
             <!-- <div style="margin-right:1em">添加标签</div> -->
-
             <div>
                 <div class="choosed_tags">
                     <el-tag v-for="(item,i) in choosed_tags" :key="i" closable :disable-transitions="false"

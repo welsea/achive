@@ -51,7 +51,7 @@
                 <div class="status_info">
                     <div><span>起始时间：</span>{{basicInfo.start}}</div>
                     <div><span>阅读状态：</span>{{(basicInfo.status==1)? '已读完':'未读完'}}</div>
-                    <div>
+                    <div v-show="basicInfo.tag.length!==0">
                         <span>标签：</span>
                         <div class="tag" v-for="(item,i) in basicInfo.tag" :key="i" effect="plain">#{{item}}</div>
                     </div>
@@ -172,7 +172,7 @@
                 this.basicInfo.tag = ch_tags;
             },
             nextStep() {
-                if (this.submit()!=false) {
+                if (this.submit() != false) {
                     this.step++
                     this.disabled = false;
                 }
@@ -183,7 +183,7 @@
             submit() {
                 return this.$refs['basicInfo'].validate((valid) => {
                     if (valid) {
-                        console.log(this.basicInfo)
+                        // console.log(this.basicInfo)
                         return true
                     } else {
                         return false

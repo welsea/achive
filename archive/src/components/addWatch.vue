@@ -36,7 +36,7 @@
                         :key="i">{{cast}}</span></div>
                 <div class="status_info">
                     <div><span>观影时间：</span>{{basicInfo.date}}</div>
-                    <div>
+                    <div v-show="basicInfo.tag.length!==0">
                         <span>标签：</span>
                         <div class="tag" v-for="(item,i) in basicInfo.tag" :key="i" effect="plain">#{{item}}</div>
                     </div>
