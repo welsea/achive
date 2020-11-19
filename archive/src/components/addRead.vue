@@ -13,8 +13,8 @@
                         <el-autocomplete class="inline-input" v-model="exit" :fetch-suggestions="querySearch"
                             placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
                     </el-form-item>
-                    <el-form-item label="书名" prop="title">
-                        <el-input v-model="basicInfo.title" clearable style="width:200px; margin-left:1em"
+                    <el-form-item label="书名" prop="name">
+                        <el-input v-model="basicInfo.name" clearable style="width:200px; margin-left:1em"
                             :disabled="Boolean(isExist)"></el-input>
                     </el-form-item>
                     <el-form-item label="作者" prop="author">
@@ -45,7 +45,7 @@
             <div class="info">
                 <i class="el-icon-reading icon"></i>
                 <div class="main_info">
-                    <div>{{basicInfo.title}}</div>
+                    <div>{{basicInfo.name}}</div>
                     <div><span>作者：</span>{{basicInfo.author}}</div>
                 </div>
                 <div class="status_info">
@@ -57,6 +57,7 @@
                     </div>
                 </div>
             </div>
+            <div style="margin-bottom:1em"><el-input v-model="title" placeholder="请输入标题"></el-input></div>
             <tinymce />
         </div>
         <!-- <div class="nextbtn">
@@ -79,14 +80,14 @@
             return {
                 type: 1,
                 basicInfo: {
-                    title: '',
+                    name: '',
                     author: '',
                     start: '',
                     status: 1,
                     tag: [],
                 },
                 rules: {
-                    title: [{
+                    name: [{
                         required: true,
                         message: '请输入书名',
                         trigger: 'change'
@@ -107,7 +108,8 @@
                 step: 1,
                 msg: 'use tinymce',
                 disabled: true,
-                isShow: false
+                isShow: false,
+                title:''
             }
         },
         props: {
@@ -136,7 +138,7 @@
             },
             loadAll() {
                 return [{
-                        title: 'his dark materials',
+                        name: 'his dark materials',
                         value: 'his dark materials',
                         author: 'pullman',
                         start: '2020-10-20',
@@ -144,7 +146,7 @@
                         tag: ['sci-fic']
                     },
                     {
-                        title: 'harry potter',
+                        name: 'harry potter',
                         value: 'harry potter',
                         author: 'J.K',
                         start: '2020-10-19',
@@ -152,7 +154,7 @@
                         tag: ['sci-fic']
                     },
                     {
-                        title: 'earthsea',
+                        name: 'earthsea',
                         value: 'earthsea',
                         author: 'Usula',
                         start: '2020-10-18',

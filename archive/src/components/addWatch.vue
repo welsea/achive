@@ -7,8 +7,8 @@
         <div class="title">创建新记录</div>
         <div class="step1" v-show="step==1">
             <el-form ref="basicInfo" :model="basicInfo" :rules="rules" label-width="7em">
-                <el-form-item label="名称" prop="title">
-                    <el-input v-model="basicInfo.title" clearable style="width:200px; margin-left:1em">
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="basicInfo.name" clearable style="width:200px; margin-left:1em">
                     </el-input>
                 </el-form-item>
                 <el-form-item label="导演" prop="director">
@@ -19,6 +19,20 @@
                         format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
+                <el-form-item label="演员">
+                    <div v-for="(cast,i) in basicInfo.casts" :key="i">
+                        <span style="margin-right:1em">{{cast}}</span>
+                        <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="deleteCast(key)">
+                        </el-button>
+                    </div>
+                    <!-- <el-input v-for="(cast,i) in basicInfo.casts" :key="i" :value="cast"></el-input> -->
+                    <div style="display:flex;align-items:flex-end">
+                        <el-input v-model="newCast" placeholder="请输入演员名"></el-input>
+                        <el-button style="margin-left:1em" size="small" type="primary" plain @click="addCast">+ 添加演员
+                        </el-button>
+                    </div>
+
+                </el-form-item>
                 <el-form-item label="添加标签">
                     <AddTags v-on:ch_tag="ch_tag" />
                 </el-form-item>
@@ -27,13 +41,13 @@
 
         <div class="step2" style="width:70%; margin:auto;padding-bottom:2em" v-show="step==2">
             <div class="info">
-                <i class="el-icon-reading icon"></i>
+                <i class="el-icon-film icon"></i>
                 <div class="main_info">
-                    <div>{{basicInfo.title}}</div>
+                    <div>{{basicInfo.name}}</div>
                     <div><span>导演：</span>{{basicInfo.director}}</div>
                 </div>
-                <div class="casts" v-show="basicInfo.casts[0]!==''">演员：<span v-for="(cast,i) in basicInfo.casts"
-                        :key="i">{{cast}}</span></div>
+                <div class="casts" v-show="basicInfo.casts[0]!==''"><span>演员：</span><div v-for="(cast,i) in basicInfo.casts"
+                        :key="i" class="cast">{{cast}},</div></div>
                 <div class="status_info">
                     <div><span>观影时间：</span>{{basicInfo.date}}</div>
                     <div v-show="basicInfo.tag.length!==0">
@@ -41,6 +55,9 @@
                         <div class="tag" v-for="(item,i) in basicInfo.tag" :key="i" effect="plain">#{{item}}</div>
                     </div>
                 </div>
+            </div>
+            <div style="margin-bottom:1em">
+                <el-input v-model="title" placeholder="请输入标题"></el-input>
             </div>
             <tinymce />
         </div>
@@ -64,14 +81,14 @@
             return {
                 type: 1,
                 basicInfo: {
-                    title: '',
+                    name: '',
                     director: '',
                     date: '',
-                    casts: ['演员1'],
+                    casts: [],
                     tag: []
                 },
                 rules: {
-                    title: [{
+                    name: [{
                         required: true,
                         message: '请输入电影名',
                         trigger: 'change'
@@ -92,14 +109,19 @@
                 step1: false,
                 msg: 'use tinymce',
                 disabled: true,
+                title: '',
+                newCast: ''
             }
         },
         methods: {
             //step1
             addCast() {
-                if (this.basicInfo.casts[0] !== '') {
-                    this.basicInfo.casts.push();
-                }
+                this.basicInfo.casts.push(this.newCast);
+                this.newCast=''
+                console.log(this.basicInfo.casts)
+            },
+            deleteCast(i) {
+                this.basicInfo.casts.splice(i, 1)
             },
             ch_tag(tags) {
                 let ch_tags = []
@@ -109,7 +131,7 @@
                 this.basicInfo.tag = ch_tags;
             },
             nextStep() {
-                if (this.submit()!=false) {
+                if (this.submit() != false) {
                     this.step++
                     this.disabled = false;
                 }
@@ -242,5 +264,11 @@
     .disabled {
         background-color: #888;
         color: white;
+    }
+
+    .cast{
+        display: inline-block;
+        font-size:0.9em;
+        margin-right:0.2em
     }
 </style>
