@@ -179,7 +179,12 @@
                     this.disabled = false;
                 }
                 if (this.step > 2) {
-                    this.$router.push('/record')
+                    this.$router.push({
+                        path:'/record',
+                        query:{
+                            type:'read'
+                        }
+                    })
                 }
             },
             submit() {

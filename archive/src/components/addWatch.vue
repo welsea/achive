@@ -118,7 +118,7 @@
             addCast() {
                 this.basicInfo.casts.push(this.newCast);
                 this.newCast=''
-                console.log(this.basicInfo.casts)
+                // console.log(this.basicInfo.casts)
             },
             deleteCast(i) {
                 this.basicInfo.casts.splice(i, 1)
@@ -136,13 +136,18 @@
                     this.disabled = false;
                 }
                 if (this.step > 2) {
-                    this.$router.push('/record')
+                    this.$router.push({
+                        path:'/record',
+                        query:{
+                            type:'watch'
+                        }
+                    })
                 }
             },
             submit() {
                 return this.$refs['basicInfo'].validate((valid) => {
                     if (valid) {
-                        console.log(this.basicInfo)
+                        // console.log(this.basicInfo)
                         return true
                     } else {
                         return false
