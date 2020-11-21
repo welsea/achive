@@ -30,7 +30,7 @@
         data() {
             return {
                 radio: 1,
-                exist: false,
+                exist: 'false',
                 type: '1'
             }
         },
@@ -40,8 +40,12 @@
             },
         },
         mounted() {
-            this.type = this.$route.params.type;
-            this.exist = this.$route.params.exist;
+            this.type = this.$route.query.type;
+            this.exist = this.$route.query.exist;
+        },
+        created() {
+            this.type = this.$route.query.type;
+            this.exist = this.$route.query.exist;
         },
     }
 </script>

@@ -9,22 +9,21 @@
             <!-- <div>添加新记录</div> -->
             <div style="margin-bottom:1em;">
                 <el-form ref="basicInfo" :model="basicInfo" :rules="rules" label-width="7em">
-                    <el-form-item v-show="Boolean(isExist)" label="搜索已有条目">
+                    <el-form-item v-show="ise" label="搜索已有条目">
                         <el-autocomplete class="inline-input" v-model="exit" :fetch-suggestions="querySearch"
                             placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
                     </el-form-item>
                     <el-form-item label="书名" prop="name">
                         <el-input v-model="basicInfo.name" clearable style="width:200px; margin-left:1em"
-                            :disabled="Boolean(isExist)"></el-input>
+                            :disabled="ise"></el-input>
                     </el-form-item>
                     <el-form-item label="作者" prop="author">
                         <el-input v-model="basicInfo.author" clearable style="width:200px; margin-left:1em"
-                            :disabled="Boolean(isExist)"></el-input>
+                            :disabled="ise"></el-input>
                     </el-form-item>
                     <el-form-item label="开始时间" prop="start">
                         <el-date-picker style=" margin-left:1em" v-model="basicInfo.start" type="date"
-                            placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
-                            :disabled="Boolean(isExist)">
+                            placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" :disabled="ise">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="状态">
@@ -57,7 +56,9 @@
                     </div>
                 </div>
             </div>
-            <div style="margin-bottom:1em"><el-input v-model="title" placeholder="请输入标题"></el-input></div>
+            <div style="margin-bottom:1em">
+                <el-input v-model="title" placeholder="请输入标题"></el-input>
+            </div>
             <tinymce />
         </div>
         <!-- <div class="nextbtn">
@@ -109,11 +110,12 @@
                 msg: 'use tinymce',
                 disabled: true,
                 isShow: false,
-                title:''
+                title: '',
+                ise: false
             }
         },
         props: {
-            isExist: Boolean
+            isExist: String
         },
         methods: {
             //step1
@@ -174,28 +176,33 @@
                 this.basicInfo.tag = ch_tags;
             },
             nextStep() {
-                if (this.submit() != false) {
+                if (this.submit()) {
                     this.step++
                     this.disabled = false;
+                } else {
+                    console.log(this.submit());
+                    
                 }
                 if (this.step > 2) {
                     this.$router.push({
-                        path:'/record',
-                        query:{
-                            type:'read'
+                        path: '/record',
+                        query: {
+                            type: 'read'
                         }
                     })
                 }
+                // console.log(this.submit())
             },
             submit() {
-                return this.$refs['basicInfo'].validate((valid) => {
-                    if (valid) {
-                        // console.log(this.basicInfo)
-                        return true
-                    } else {
-                        return false
+                let result;
+                this.$refs['basicInfo'].validate((valid) => {
+                    if(valid){
+                        result=true
+                    }else{
+                        result=false
                     }
                 })
+                return result;
             },
             priStep() {
                 if (this.step > 1) {
@@ -204,15 +211,23 @@
                 if (this.step == 1) {
                     this.disabled = true;
                 }
+            },
+            isE() {
+                if (this.isExist == 'true') {
+                    this.ise = true;
+                } else {
+                    this.ise = false;
+                }
             }
             //step2
 
         },
         mounted() {
             this.exited_records = this.loadAll()
+            this.isE();
         },
-        watch: {
-
+        created() {
+            // this.isE();
         },
     }
 </script>

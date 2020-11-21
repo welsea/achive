@@ -46,8 +46,9 @@
                     <div>{{basicInfo.name}}</div>
                     <div><span>导演：</span>{{basicInfo.director}}</div>
                 </div>
-                <div class="casts" v-show="basicInfo.casts[0]!==''"><span>演员：</span><div v-for="(cast,i) in basicInfo.casts"
-                        :key="i" class="cast">{{cast}},</div></div>
+                <div class="casts" v-show="basicInfo.casts[0]!==''"><span>演员：</span>
+                    <div v-for="(cast,i) in basicInfo.casts" :key="i" class="cast">{{cast}},</div>
+                </div>
                 <div class="status_info">
                     <div><span>观影时间：</span>{{basicInfo.date}}</div>
                     <div v-show="basicInfo.tag.length!==0">
@@ -117,7 +118,7 @@
             //step1
             addCast() {
                 this.basicInfo.casts.push(this.newCast);
-                this.newCast=''
+                this.newCast = ''
                 // console.log(this.basicInfo.casts)
             },
             deleteCast(i) {
@@ -131,28 +132,32 @@
                 this.basicInfo.tag = ch_tags;
             },
             nextStep() {
-                if (this.submit() != false) {
+                if (this.submit()) {
                     this.step++
                     this.disabled = false;
+                } else {
+                    console.log(this.submit())
+
                 }
                 if (this.step > 2) {
                     this.$router.push({
-                        path:'/record',
-                        query:{
-                            type:'watch'
+                        path: '/record',
+                        query: {
+                            type: 'watch'
                         }
                     })
                 }
             },
             submit() {
-                return this.$refs['basicInfo'].validate((valid) => {
+                let result;
+                this.$refs['basicInfo'].validate((valid) => {
                     if (valid) {
-                        // console.log(this.basicInfo)
-                        return true
+                        result = true
                     } else {
-                        return false
+                        result = false
                     }
                 })
+                return result;
             },
             priStep() {
                 if (this.step > 1) {
@@ -271,9 +276,9 @@
         color: white;
     }
 
-    .cast{
+    .cast {
         display: inline-block;
-        font-size:0.9em;
-        margin-right:0.2em
+        font-size: 0.9em;
+        margin-right: 0.2em
     }
 </style>

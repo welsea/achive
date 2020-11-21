@@ -10,7 +10,7 @@
         </div>
         <div class="record">
             <div class="main">
-                <h1 class="title"><i class="el-icon-film icon"></i> Title</h1>
+                <h1 class="title"><i :class="[type=='read'? 'el-icon-reading':'el-icon-file','icon']"></i> Title</h1>
                 <div class="main_info">
                     <img src="../assets/avatar.png" alt="avatar" class="avatar">
                     <a href="#">welsea</a>
@@ -21,22 +21,29 @@
                 </div>
             </div>
             <div class="side">
-                <div class="info">
-                    <!-- <div class="main_info"> -->
+                <div class="info" v-if="type=='watch'">
                     <div><span>电影：</span>{{basicInfo.name}}</div>
                     <div><span>导演：</span>{{basicInfo.director}}</div>
-                    <!-- </div> -->
                     <div class="casts" v-show="basicInfo.casts[0]!==''"><span>演员：</span>
                         <div v-for="(cast,i) in basicInfo.casts" :key="i" class="cast">{{cast}},</div>
                     </div>
-                    <!-- <div class="status_info"> -->
                     <div><span>观影时间：</span>{{basicInfo.date}}</div>
                     <div v-show="basicInfo.tag.length!==0">
                         <span>标签：</span>
                         <div class="tag" v-for="(item,i) in basicInfo.tag" :key="i" effect="plain">#{{item}}</div>
                     </div>
-                    <!-- </div> -->
                 </div>
+                <div class="info" v-else>
+                    <div><span>书名：</span>{{basicInfo.name}}</div>
+                    <div><span>作者：</span>{{basicInfo.author}}</div>
+                    <div><span>开始时间：</span>{{basicInfo.date}}</div>
+                    <div><span>状态：</span>{{basicInfo.status}}</div>
+                    <div v-show="basicInfo.tag.length!==0">
+                        <span>标签：</span>
+                        <div class="tag" v-for="(item,i) in basicInfo.tag" :key="i" effect="plain">#{{item}}</div>
+                    </div>
+                </div>
+
                 <!-- 读书记录显示 -->
                 <div class="other" v-show="type=='read'">
                     <div>《厌女》的其他记录：</div>
@@ -67,7 +74,7 @@
                 },
                 title: '银翼杀手影评',
                 content: [],
-                type:''
+                type: ''
             }
         },
         methods: {
@@ -81,7 +88,7 @@
         },
         created() {
             this.fillContent();
-            this.type=this.$route.query.type;
+            this.type = this.$route.query.type;
         },
     }
 </script>
@@ -109,9 +116,11 @@
         font-size: 0.8em;
         width: 20%
     }
-    .other{
+
+    .other {
         margin-top: 4em;
     }
+
     .other>a {
         display: block;
         /* padding-left: 2em; */
@@ -124,14 +133,16 @@
         font-size: 0.8em;
     }
 
-    .other>div:first-child{
-        color:green;
+    .other>div:first-child {
+        color: green;
     }
-    .other>div:last-child{
-        color:#888;
+
+    .other>div:last-child {
+        color: #888;
         font-size: 0.8em;
         text-align: right;
     }
+
     .title {
         position: relative;
         right: 1.5em;
@@ -139,11 +150,14 @@
 
     .info span {
         color: #00800061;
-        ;
+
     }
 
     .info {
         color: green;
+        border: 3px dotted;
+        border-color: #00800029;
+        padding: 1em;
     }
 
     .info>div {

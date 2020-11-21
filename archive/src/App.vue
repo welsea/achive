@@ -33,7 +33,9 @@
       $route(to, from) {
         this.changePath(to, from);
       }
-    }
+    },
+    created() {
+    },
   }
 </script>
 
