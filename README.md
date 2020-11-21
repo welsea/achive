@@ -1,2 +1,2 @@
-# achive
-achive of  reading/watching list
+# archive
+archive of  reading/watching list

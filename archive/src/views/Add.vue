@@ -63,8 +63,4 @@
         color: #44a448;
     }
 
-    .recordinfo {
-        /* margin: auto; */
-        /* width: 100%; */
-    }
 </style>
