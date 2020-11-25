@@ -28,26 +28,33 @@
             return {
                 init: {
                     selector: "#tinymce", //tinymce的id
-                    height:'500',
+                    height: '500',
                     language_url: "../../static/tinymce/zh_CN.js",
                     language: "zh_CN",
                     skin: 'borderless',
-                    skin_url: "../../static/tinymce/skins/ui/oxide", 
-                    menubar:false,
-                    plugins:'link lists image wordcount',
-                    toolbar:'undo redo |  formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image | removeformat',
+                    skin_url: "../../static/tinymce/skins/ui/oxide",
+                    menubar: false,
+                    plugins: 'link lists image wordcount',
+                    toolbar: 'undo redo |  formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image | removeformat',
+                    images_upload_handler: async (blobInfo, success, failure) => {
+                        const img = 'data:image/jpeg;base64,' + blobInfo.base64();
+                        success(img)
+                        failure(img)
+                    }
                     // image_title:true,
                     // file_picker_types: 'image',
 
                 },
-                value:''
+                value: '请输入内容'
             }
         },
         mounted() {
             tinymce.init({})
         },
         methods: {
-
+            saveContent(){
+                console.log(this.value)
+            }
         },
         watch: {
 

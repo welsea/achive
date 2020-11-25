@@ -59,7 +59,7 @@
             <div style="margin-bottom:1em">
                 <el-input v-model="title" placeholder="请输入标题"></el-input>
             </div>
-            <tinymce />
+            <tinymce ref="tinymce" />
         </div>
         <!-- <div class="nextbtn">
             <el-button type="primary" @click="nextStep">Next</el-button>
@@ -190,6 +190,7 @@
                             type: 'read'
                         }
                     })
+                    this.$refs.tinymce.saveContent();
                 }
                 // console.log(this.submit())
             },
